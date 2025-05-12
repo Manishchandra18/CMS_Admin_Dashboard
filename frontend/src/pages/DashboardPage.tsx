@@ -4,7 +4,6 @@ import {
   Card,
   CardContent,
   Typography,
-  Grid,
   CircularProgress,
   Divider,
   List,
@@ -19,6 +18,7 @@ import { useNavigate } from 'react-router-dom';
 import LogoutButton from './LogoutButton.tsx';
 import { useGetStatsQuery } from '../api/dashboardApi';
 import { useAppSelector } from '../hooks/useAppSelector';
+import Grid from '@mui/material/GridLegacy';
 
 const DashboardPage = () => {
   const navigate = useNavigate();

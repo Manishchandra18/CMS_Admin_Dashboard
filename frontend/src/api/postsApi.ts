@@ -4,7 +4,7 @@ import { RootState } from '../app/store';
 // --- Types ---
 export interface Post {
   imageUrl: string;
-  id: string; 
+  id: string;
   title: string;
   content: string;
   author: string;
@@ -19,19 +19,22 @@ interface GetPostsResponse {
   total: number;
 }
 
+// --- Base Query with Auth & Env Support ---
+export const baseQuery = fetchBaseQuery({
+  baseUrl: import.meta.env.VITE_REACT_APP_API_URL, // dynamic based on env
+  prepareHeaders: (headers, { getState }) => {
+    const token = (getState() as RootState).auth.token;
+    if (token) {
+      headers.set('authorization', `Bearer ${token}`);
+    }
+    return headers;
+  },
+});
+
 // --- API ---
 export const postsApi = createApi({
   reducerPath: 'postsApi',
-  baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:4000/api/', // ✅ Your real backend
-    prepareHeaders: (headers, { getState }) => {
-      const token = (getState() as RootState).auth.token;
-      if (token) {
-        headers.set('authorization', `Bearer ${token}`);
-      }
-      return headers;
-    },
-  }),
+  baseQuery, //  uses dynamic env-based URL
   tagTypes: ['Posts'],
   endpoints: (builder) => ({
     // Get paginated posts
@@ -76,6 +79,7 @@ export const postsApi = createApi({
   }),
 });
 
+// --- Hooks ---
 export const {
   useGetPostsQuery,
   useGetPostByIdQuery,
@@ -83,14 +87,3 @@ export const {
   useUpdatePostMutation,
   useDeletePostMutation,
 } = postsApi;
-
-export const baseQuery = fetchBaseQuery({
-  baseUrl: 'http://localhost:4000/api/',
-  prepareHeaders: (headers, { getState }) => {
-    const token = (getState() as RootState).auth.token;
-    if (token) {
-      headers.set('authorization', `Bearer ${token}`);
-    }
-    return headers;
-  }
-});

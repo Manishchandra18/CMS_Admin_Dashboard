@@ -5,7 +5,7 @@ const morgan = require('morgan');
 require('dotenv').config();
 
 const postRoutes = require('./routes/postRoutes');
-const UserRoutes = require('../Backend/routes/UserRoutes');
+const UserRoutes = require('./routes/userRoutes');
 const categoryRoutes = require('./routes/categoryRoutes');
 const dashboardRoutes = require('./routes/dashboardRoutes');
 const app = express();
